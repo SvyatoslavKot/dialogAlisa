@@ -1,0 +1,274 @@
+
+POST https://e-kotovsvyatoslav.ru/api/v1/yandex-alice-skill
+Content-Type: application/json
+
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "UTC",
+    "client_id": "ru.yandex.searchplugin/7.16 (none none; android 4.4.2)",
+    "interfaces": {
+      "screen": {},
+      "payments": {},
+      "account_linking": {}
+    }
+  },
+  "session": {
+    "message_id": 0,
+    "session_id": "a4569f8b-19c1-440a-9782-5920798bdba6",
+    "skill_id": "ea4015ee-57b1-44f1-ad80-f5eeeefa232c",
+    "user": {
+      "user_id": "56A3F0718FDD60B0C6EA2F3FE850625B0D9D91391117001C60BC23571D8872FB"
+    },
+    "application": {
+      "application_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+    },
+    "user_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1",
+    "new": true
+  },
+  "request": {
+    "command": "",
+    "original_utterance": "",
+    "nlu": {
+      "tokens": [],
+      "entities": [],
+      "intents": {}
+    },
+    "markup": {
+      "dangerous_context": false
+    },
+    "type": "SimpleUtterance"
+  },
+  "state": {
+    "session": {},
+    "user": {},
+    "application": {}
+  },
+  "version": "1.0"
+}
+
+
+
+###
+
+POST http://localhost:8070/api/v1/yandex-alice-skill
+Content-Type: application/json
+
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "UTC",
+    "client_id": "ru.yandex.searchplugin/7.16 (none none; android 4.4.2)",
+    "interfaces": {
+      "screen": {},
+      "payments": {},
+      "account_linking": {}
+    }
+  },
+  "session": {
+    "message_id": 0,
+    "session_id": "a4569f8b-19c1-440a-9782-5920798bdba6",
+    "skill_id": "ea4015ee-57b1-44f1-ad80-f5eeeefa232c",
+    "user": {
+      "user_id": "56A3F0718FDD60B0C6EA2F3FE850625B0D9D91391117001C60BC23571D8872FB"
+    },
+    "application": {
+      "application_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+    },
+    "user_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1",
+    "new": true
+  },
+  "request": {
+    "command": "",
+    "original_utterance": "",
+    "nlu": {
+      "tokens": [],
+      "entities": [],
+      "intents": {}
+    },
+    "markup": {
+      "dangerous_context": false
+    },
+    "type": "SimpleUtterance"
+  },
+  "state": {
+    "session": {},
+    "user": {},
+    "application": {}
+  },
+  "version": "1.0"
+}
+
+
+
+
+###
+POST http://localhost:8070/api/v1/yandex-alice-skill
+Content-Type: application/json
+
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "UTC",
+    "client_id": "ru.yandex.searchplugin/7.16 (none none; android 4.4.2)",
+    "interfaces": {
+      "screen": {},
+      "payments": {},
+      "account_linking": {}
+    }
+  },
+  "session": {
+    "message_id": 0,
+    "session_id": "a4569f8b-19c1-440a-9782-5920798bdba8",
+    "skill_id": "ea4015ee-57b1-44f1-ad80-f5eeeefa232c",
+    "user": {
+      "user_id": "56A3F0718FDD60B0C6EA2F3FE850625B0D9D91391117001C60BC23571D8872F3"
+    },
+    "application": {
+      "application_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+    },
+    "user_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1",
+    "new": true
+  },
+  "request": {
+    "command": "покажи расписание на сегодня",
+    "original_utterance": "покажи расписание",
+    "nlu": {
+      "tokens": [
+        "покажи",
+        "карточку"
+      ],
+      "entities": [],
+      "intents": {}
+    },
+    "markup": {
+      "dangerous_context": false
+    },
+    "type": "SimpleUtterance"
+  },
+  "state": {
+    "session": {},
+    "user": {},
+    "application": {}
+  },
+  "version": "1.0"
+}
+
+
+
+
+###
+POST http://localhost:8070/api/v1/yandex-alice-skill
+Content-Type: application/json
+
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "UTC",
+    "client_id": "ru.yandex.searchplugin/7.16 (none none; android 4.4.2)",
+    "interfaces": {
+      "screen": {},
+      "payments": {},
+      "account_linking": {}
+    }
+  },
+  "session": {
+    "message_id": 0,
+    "session_id": "a4569f8b-19c1-440a-9782-5920798bdba8",
+    "skill_id": "ea4015ee-57b1-44f1-ad80-f5eeeefa232c",
+    "user": {
+      "user_id": "56A3F0718FDD60B0C6EA2F3FE850625B0D9D91391117001C60BC23571D8872F3"
+    },
+    "application": {
+      "application_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+    },
+    "user_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1",
+    "new": true
+  },
+  "request": {
+    "command": "Меня зовут Свят",
+    "original_utterance": "Меня зовут Свят",
+    "nlu": {
+      "tokens": [
+        "Меня",
+        "зовут",
+        "Свят"
+      ],
+      "entities": [
+        {
+          "tokens": {
+            "start" : 2,
+            "end" : 3
+          },
+          "type": "YANDEX.FIO",
+          "value": {
+            "first_name": "Свят"
+          }
+        }
+      ],
+      "intents": {}
+    },
+    "markup": {
+      "dangerous_context": false
+    },
+    "type": "SimpleUtterance"
+  },
+  "state": {
+    "session": {},
+    "user": {},
+    "application": {}
+  },
+  "version": "1.0"
+}
+
+###
+POST http://localhost:8070/api/v1/yandex-alice-skill
+Content-Type: application/json
+
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "UTC",
+    "client_id": "ru.yandex.searchplugin/7.16 (none none; android 4.4.2)",
+    "interfaces": {
+      "screen": {},
+      "payments": {},
+      "account_linking": {}
+    }
+  },
+  "session": {
+    "message_id": 0,
+    "session_id": "0f2c99f0-46e0-4d28-96ab-12cbbf98d7fa",
+    "skill_id": "ea4015ee-57b1-44f1-ad80-f5eeeefa232c",
+    "user": {
+      "user_id": "56A3F0718FDD60B0C6EA2F3FE850625B0D9D91391117001C60BC23571D8872FB"
+    },
+    "application": {
+      "application_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+    },
+    "new": true,
+    "user_id": "ED2FB4B2DCB1255D054092FF09FFDBF0303A10269DAE0F9D0D5349CB877894D1"
+  },
+  "request": {
+    "command": "покажи кнопку",
+    "original_utterance": "покажи кнопку",
+    "nlu": {
+      "tokens": [
+        "покажи",
+        "кнопку"
+      ],
+      "entities": [],
+      "intents": {}
+    },
+    "markup": {
+      "dangerous_context": false
+    },
+    "type": "SimpleUtterance"
+  },
+  "state": {
+    "session": {},
+    "user": {},
+    "application": {}
+  },
+  "version": "1.0"
+}
