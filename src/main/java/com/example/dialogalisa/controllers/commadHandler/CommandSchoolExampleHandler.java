@@ -1,25 +1,22 @@
 package com.example.dialogalisa.controllers.commadHandler;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.abstractClass.AbstractRequestHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
 import com.example.dialogalisa.dto.model.Lesson;
 import com.example.dialogalisa.dto.model.Session;
 import com.example.dialogalisa.dto.model.SessionState;
 import com.example.dialogalisa.dto.yandexAlice.request.YandexAliceRequest;
-import com.example.dialogalisa.dto.yandexAlice.response.YASkillResponse;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
-import com.example.dialogalisa.repository.SessionRepository;
 import com.example.dialogalisa.service.LessonService;
 import com.example.dialogalisa.service.SessionService;
 import com.example.dialogalisa.service.UserService;
 import com.example.dialogalisa.util.DateAndNumToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
 
 
-public class CommandSchoolExampleHandler extends YandexAlisRequestAbstractHandler {
+public class CommandSchoolExampleHandler extends AbstractRequestHandler implements YandexAlisCommandHandler {
 
 
     private YandexAliceResponse response;
@@ -28,12 +25,12 @@ public class CommandSchoolExampleHandler extends YandexAlisRequestAbstractHandle
     private List<Lesson> lessonsWithEx;
     private int day;
 
-    public CommandSchoolExampleHandler(UserService userService, SessionService sessionService, LessonService lessonService, Session session) {
-        super(userService, sessionService, lessonService, session);
+    public CommandSchoolExampleHandler(UserService userService, SessionService sessionService, LessonService lessonService) {
+        super(userService, sessionService, lessonService);
     }
 
     @Override
-    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest) {
+    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest, Session session) {
         String command = yandexAliceRequest.getRequest().getCommand();
         command.toLowerCase(Locale.ROOT);
         String responseMsg  = new String();
@@ -43,6 +40,7 @@ public class CommandSchoolExampleHandler extends YandexAlisRequestAbstractHandle
         if (day > 5) {
             response = createResponse("Завтра выходной, может быть ты хочешь узнать домашнее задание на понедельник?",
                     "<speaker effect=\"hamster\"> Завтра выходной, может быть ты хочешь узнать домашнее задание на понедельник?",
+                    session,
                     SessionState.SCHOOL_EXAMPLE,
                     "домашнее задание на понедельник"
             );
@@ -66,7 +64,7 @@ public class CommandSchoolExampleHandler extends YandexAlisRequestAbstractHandle
             responseMsg = responseMsg + "Я не нашел домашнего задания на " + dayOfWeak;
             responseTts = responseTts + "Я sil <[150]> не нашел домашнево задание на " + dayOfWeak + "sil <[500]>";
         }
-        response = createResponse(responseMsg,responseTts,SessionState.COMMAND_END,"");
+        response = createResponse(responseMsg,responseTts,session,SessionState.COMMAND_END,"");
         return response;
     }
 }

@@ -1,20 +1,17 @@
 package com.example.dialogalisa.controllers.commadHandler;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.abstractClass.AbstractRequestHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
 import com.example.dialogalisa.dto.model.Lesson;
 import com.example.dialogalisa.dto.model.Session;
 import com.example.dialogalisa.dto.model.SessionState;
 import com.example.dialogalisa.dto.yandexAlice.request.YandexAliceRequest;
-import com.example.dialogalisa.dto.yandexAlice.response.YASkillResponse;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
-import com.example.dialogalisa.repository.SessionRepository;
 import com.example.dialogalisa.service.LessonService;
 import com.example.dialogalisa.service.SessionService;
 import com.example.dialogalisa.service.UserService;
 import com.example.dialogalisa.util.DateAndNumToString;
 import com.example.dialogalisa.util.Phrases;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -23,17 +20,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-public class CommandSchoolScheduledHandler extends YandexAlisRequestAbstractHandler {
+public class CommandSchoolScheduledHandler extends AbstractRequestHandler implements YandexAlisCommandHandler  {
 
     private DateAndNumToString dateAndNumParser = new DateAndNumToString();
     private int day;
 
-    public CommandSchoolScheduledHandler(UserService userService, SessionService sessionService, LessonService lessonService, Session session) {
-        super(userService, sessionService, lessonService, session);
+    public CommandSchoolScheduledHandler(UserService userService, SessionService sessionService, LessonService lessonService) {
+        super(userService, sessionService, lessonService);
     }
 
     @Override
-    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest) {
+    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest, Session session) {
         String command = yandexAliceRequest.getRequest().getCommand();
         if (command.contains("неделю")) {
             return responseHandlerWeak(response, session);
@@ -50,6 +47,7 @@ public class CommandSchoolScheduledHandler extends YandexAlisRequestAbstractHand
         if (day > 5) {
             response = createResponse("Завтра выходной, может быть ты хочешь узнать расписание на понедельник?",
                     " <speaker effect=\"hamster\"> Завтра выходной, может быть ты хочешь узнать расписание на понедельник?",
+                    session,
                     SessionState.SCHOOL_SCHEDULED,
                     "покажи расписание на понедельник");
             return yandexAliceResponse;
@@ -71,7 +69,7 @@ public class CommandSchoolScheduledHandler extends YandexAlisRequestAbstractHand
             responseMsg = responseMsg + Phrases.SCHEDULED_END.getText();
             responseTts = responseTts + Phrases.SCHEDULED_END.getTts();
 
-            response = createResponse(responseMsg, responseTts, SessionState.COMMAND_END, "");
+            response = createResponse(responseMsg, responseTts, session, SessionState.COMMAND_END, "");
             return response;
     }
 
@@ -93,7 +91,7 @@ public class CommandSchoolScheduledHandler extends YandexAlisRequestAbstractHand
         responseMsg = responseMsg + Phrases.SCHEDULED_END_WEAK.getText();
         responseTts = responseTts + Phrases.SCHEDULED_END_WEAK.getTts();
 
-        yandexAliceResponse = createResponse(responseMsg, responseTts, SessionState.COMMAND_END, "");
+        yandexAliceResponse = createResponse(responseMsg, responseTts, session, SessionState.COMMAND_END, "");
         return  yandexAliceResponse;
     }
 

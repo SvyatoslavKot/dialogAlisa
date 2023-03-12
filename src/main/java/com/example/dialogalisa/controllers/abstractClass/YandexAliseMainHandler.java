@@ -6,6 +6,7 @@ import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
 
 public interface YandexAliseMainHandler {
 
+    YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest);
     YandexAliceResponse newSession (YandexAliceRequest request, ServiceUser user);
     YandexAliceResponse newUser (YandexAliceRequest request);
 }

@@ -1,6 +1,7 @@
 package com.example.dialogalisa.controllers;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAliseMainHandler;
 import com.example.dialogalisa.dto.yandexAlice.request.*;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
 import com.example.dialogalisa.service.LessonService;
@@ -13,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext
@@ -26,7 +26,6 @@ class RequestHandlerTest {
     @Autowired
     private LessonService lessonService;
 
-    private YARequestHandlerFactory yaRequestHandlerFactory;
 
     @Test
     public void testRequestHandler() {
@@ -59,11 +58,9 @@ class RequestHandlerTest {
 
         YandexAliceRequest yaRequest = new YandexAliceRequest(metadata,request,session,"1.0");
 
-
-        yaRequestHandlerFactory = new YARequestHandlerFactory(userService,sessionService, lessonService);
-        YandexAlisRequestAbstractHandler requestHandler = yaRequestHandlerFactory.newRequestHandler();
-
-        YandexAliceResponse response = requestHandler.requestHandler(yaRequest);
+        YandexAlisCommandHandler commandHandler = YARequestHandlerFactory.newRequestCommandHandler(userService,sessionService,lessonService);
+        YandexAliseMainHandler mainHandler = YARequestHandlerFactory.newMainRequestHandler(userService,sessionService,lessonService, commandHandler);
+        YandexAliceResponse response = mainHandler.requestHandler(yaRequest);
 
         System.out.println(response.getResponse().getText());
     }

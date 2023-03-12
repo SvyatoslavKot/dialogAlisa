@@ -1,27 +1,24 @@
 package com.example.dialogalisa.controllers.sessionHandlers;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.abstractClass.AbstractRequestHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
 import com.example.dialogalisa.dto.model.Session;
 import com.example.dialogalisa.dto.model.SessionState;
 import com.example.dialogalisa.dto.yandexAlice.request.YandexAliceRequest;
-import com.example.dialogalisa.dto.yandexAlice.response.YASkillResponse;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
-import com.example.dialogalisa.repository.SessionRepository;
 import com.example.dialogalisa.service.LessonService;
 import com.example.dialogalisa.service.SessionService;
 import com.example.dialogalisa.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 
-public class SessionInfoHandler extends YandexAlisRequestAbstractHandler {
+public class SessionInfoHandler extends AbstractRequestHandler implements YandexAlisCommandHandler {
 
-    public SessionInfoHandler(UserService userService, SessionService sessionService, LessonService lessonService, Session session) {
-        super(userService, sessionService, lessonService, session);
+    public SessionInfoHandler(UserService userService, SessionService sessionService, LessonService lessonService) {
+        super(userService, sessionService, lessonService);
     }
 
     @Override
-    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest) {
+    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest, Session session) {
 
         String originalText = yandexAliceRequest.getRequest().getCommand();
         String responseText = new String();
@@ -41,7 +38,7 @@ public class SessionInfoHandler extends YandexAlisRequestAbstractHandler {
             responseTts = responseTts + "<speaker effect=\"hamster\"> Я мог+у показ+ать распис+ание ур+оков sil <[500]> пр+осто скаж+и sil <[500]> 'покаж+и распис+ание на sil <[500]> ииии sil <[300]> день нед+ели sil <[300]> на кот+орый х+очешь узн+ать сво+ё распис+ание'. \n"
                             +"sil <[600]>Или ты м+ожешь спрос+ить,sil <[500]> что теб+е з+адали в шк+оле н+адом sil <[600]> скаж+и:sil<[300]> как+ая дом+ашка на з+автра?sil <[600]> ну или чт+о-то в этом р+оде . \n " +
                             "sil <[600]> я sil <[200]> мог+у не так мн+ого,sil <[600]> но я еще уч+усь.";
-            response = createResponse(responseText,responseTts,SessionState.INFO_SKILL,"");
+            response = createResponse(responseText,responseTts,session,SessionState.INFO_SKILL,"");
             return response;
 
         }else {

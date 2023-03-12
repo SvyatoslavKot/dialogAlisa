@@ -1,6 +1,7 @@
 package com.example.dialogalisa.controllers;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAliseMainHandler;
 import com.example.dialogalisa.dto.yandexAlice.request.YandexAliceRequest;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
 import com.example.dialogalisa.service.LessonService;
@@ -22,14 +23,14 @@ public class DialogController {
     @Autowired
     private LessonService lessonService;
 
-    private YARequestHandlerFactory yaRequestHandlerFactory;
+    private YandexAlisCommandHandler commandHandler;
+    private YandexAliseMainHandler mainHandler;
 
     @PostMapping
     public @ResponseBody YandexAliceResponse talkYandexAlice(@RequestBody YandexAliceRequest request) {
-        yaRequestHandlerFactory = new YARequestHandlerFactory(userService,sessionService, lessonService);
-        YandexAlisRequestAbstractHandler requestHandler = yaRequestHandlerFactory.newRequestHandler();
-
-        return  requestHandler.requestHandler(request);
+        commandHandler = YARequestHandlerFactory.newNoneCommandHandler(userService,sessionService,lessonService);
+        mainHandler = YARequestHandlerFactory.newMainRequestHandler(userService,sessionService,lessonService,commandHandler);
+        return mainHandler.requestHandler(request);
     }
 
 }

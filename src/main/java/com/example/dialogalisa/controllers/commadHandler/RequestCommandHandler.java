@@ -1,6 +1,8 @@
-package com.example.dialogalisa.controllers;
+package com.example.dialogalisa.controllers.commadHandler;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
+import com.example.dialogalisa.controllers.YARequestHandlerFactory;
+import com.example.dialogalisa.controllers.abstractClass.AbstractRequestHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
 import com.example.dialogalisa.dto.model.ServiceUser;
 import com.example.dialogalisa.dto.model.Session;
 import com.example.dialogalisa.dto.model.SessionState;
@@ -15,23 +17,23 @@ import com.example.dialogalisa.util.YARequestUtil;
 import java.util.List;
 import java.util.Locale;
 
-public class RequestCommandHandler extends YandexAlisRequestAbstractHandler {
+public class RequestCommandHandler extends AbstractRequestHandler implements YandexAlisCommandHandler {
 
     private YARequestUtil yaRequestUtil = new YARequestUtil();
-    private YandexAlisRequestAbstractHandler handler;
+    private YandexAlisCommandHandler handler;
 
-    public RequestCommandHandler(UserService userService, SessionService sessionService, LessonService lessonService, Session session) {
-        super(userService, sessionService,lessonService, session);
+
+    public RequestCommandHandler(UserService userService, SessionService sessionService, LessonService lessonService) {
+        super(userService, sessionService, lessonService);
     }
 
     @Override
-    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest) {
+    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest, Session session) {
         System.out.println(yandexAliceRequest.getRequest().getCommand());
 
         String command = yandexAliceRequest.getRequest().getCommand();
         if(command!= null){
             command.toLowerCase(Locale.ROOT);
-            YARequestHandlerFactory factory = new YARequestHandlerFactory(this);
 
             if (command.contains("как") && command.contains("рассписание") && command.contains("загружать") || command.contains("загрузить") || command.contains("добавить")  ){
                 YASkillButton button = new YASkillButton("Асистент Валера", "https://t.me/AssistantValeraRobot","",true);
@@ -40,19 +42,19 @@ public class RequestCommandHandler extends YandexAlisRequestAbstractHandler {
                 response.getResponse().setTts("<speaker effect=\"hamster\"> Для загрузки рассписания sil <[600]> вы можете восп+ользоваться ассист+ент Б+отом в Телегр+ам.");
                 return response;
             }else if (command.contains("расписание") || command.contains("уроки") || command.contains("рассписание") ){
-                handler = factory.newCommandSchoolScheduledHandler(this.session);
-                return handler.requestHandler(yandexAliceRequest);
+                handler = YARequestHandlerFactory.newCommandSchoolScheduledHandler(this.userService, this.sessionService,this.lessonService);
+                return handler.requestHandler(yandexAliceRequest, session);
 
             }else if (command.contains("задание") || command.contains("задания") || command.contains("домашка") || command.contains("задали")){
-                handler = factory.newCommandSchoolExampleHandler(this.session);
-                return handler.requestHandler(yandexAliceRequest);
+                handler = YARequestHandlerFactory.newCommandSchoolExampleHandler(this.userService, this.sessionService,this.lessonService);
+                return handler.requestHandler(yandexAliceRequest, session);
 
-            }else if (command.contains("умеешь") && command.contains("что") || command.contains("можешь") && command.contains("что") || command.contains("навыки") ){
-                handler = factory.newCommandSkillsHandler(this.session);
-                return handler.requestHandler(yandexAliceRequest);
+            }else if (command.contains("help") || command.contains("помощь") || command.contains("умеешь") && command.contains("что") || command.contains("можешь") && command.contains("что") || command.contains("навыки") ){
+                handler = YARequestHandlerFactory.newCommandSkillsHandler(this.userService, this.sessionService,this.lessonService);
+                return handler.requestHandler(yandexAliceRequest, session);
 
             }else if (command.contains("сколько")){
-                response = createResponse("Сегодня шесть уроков","Сегодня шесть уроков",SessionState.SCHOOL_SCHEDULED, command  );
+                response = createResponse("Сегодня шесть уроков","Сегодня шесть уроков", session,SessionState.SCHOOL_SCHEDULED, command  );
                 return response;
 
             }else if (yandexAliceRequest.getRequest().getCommand().contains("привет")){
@@ -80,8 +82,8 @@ public class RequestCommandHandler extends YandexAlisRequestAbstractHandler {
 
 
             }else {
-                handler = factory.newNoneCommandHandler(this.session);
-                return handler.requestHandler(yandexAliceRequest);
+                handler = YARequestHandlerFactory.newNoneCommandHandler(this.userService, this.sessionService,this.lessonService);
+                return handler.requestHandler(yandexAliceRequest, session);
             }
 
         }else {

@@ -1,77 +1,26 @@
 package com.example.dialogalisa.controllers;
 
-import com.example.dialogalisa.controllers.abstractClass.YandexAlisRequestAbstractHandler;
-import com.example.dialogalisa.controllers.abstractClass.YandexAliseMainHandler;
-import com.example.dialogalisa.dto.model.*;
+import com.example.dialogalisa.controllers.abstractClass.AbstractMainRequestHandler;
+import com.example.dialogalisa.controllers.abstractClass.YandexAlisCommandHandler;
+import com.example.dialogalisa.dto.model.ServiceUser;
+import com.example.dialogalisa.dto.model.Session;
+import com.example.dialogalisa.dto.model.SessionState;
+import com.example.dialogalisa.dto.model.UserSource;
 import com.example.dialogalisa.dto.yandexAlice.request.YASession;
 import com.example.dialogalisa.dto.yandexAlice.request.YandexAliceRequest;
 import com.example.dialogalisa.dto.yandexAlice.response.YASkillResponse;
 import com.example.dialogalisa.dto.yandexAlice.response.YandexAliceResponse;
-import com.example.dialogalisa.exception.SessionUserNullableException;
 import com.example.dialogalisa.service.LessonService;
 import com.example.dialogalisa.service.SessionService;
 import com.example.dialogalisa.service.UserService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+public class MainRequestHandler extends AbstractMainRequestHandler {
 
-@Slf4j
-public class RequestHandler extends YandexAlisRequestAbstractHandler implements YandexAliseMainHandler {
-
-    private YARequestHandlerFactory factory;
-    private YandexAlisRequestAbstractHandler handler;
-
-
-    public RequestHandler(UserService userService, SessionService sessionService, LessonService lessonService) {
-        super(userService, sessionService, lessonService);
+    public MainRequestHandler(UserService userService, SessionService sessionService, LessonService lessonService,
+                              YandexAlisCommandHandler commandHandler) {
+        super(userService, sessionService, lessonService, commandHandler);
     }
 
-    @Override
-    @Transactional
-    public YandexAliceResponse requestHandler(YandexAliceRequest yandexAliceRequest) {
-        log.info("Request => {}" , yandexAliceRequest);
-        yandexSession = yandexAliceRequest.getSession();
-
-        try{
-            user = userService.checkedUser(yandexAliceRequest);
-
-            session = sessionService.validateSession(yandexAliceRequest, user);
-
-            if (user != null){
-
-                factory = new YARequestHandlerFactory(this);
-                if(!yandexAliceRequest.getRequest().getCommand().isEmpty()){
-                    session.setServiceUser(user);
-                    handler = factory.newRequestCommandHandler(session);
-                    response = handler.requestHandler(yandexAliceRequest);
-                    if (response != null) {
-                        return  response;
-                    }else {
-                        handler = factory.newSessionHandler(session);
-                        return handler.requestHandler(yandexAliceRequest);
-                    }
-
-                }
-                else if (session.getState() != null){
-                    handler = factory.newSessionHandler(session);
-                    return  handler.requestHandler(yandexAliceRequest);
-
-                }
-                else{
-                    return newSession(yandexAliceRequest, user);
-                }
-            }else {
-                return newUser(yandexAliceRequest);
-            }
-
-        }catch (SessionUserNullableException e) {
-            log.error(e.getMessage(), e.getCause());
-            response.getResponse().setText("test");
-            return response;
-        }
-
-    }
 
     @Override
     public YandexAliceResponse newSession(YandexAliceRequest request, ServiceUser user) {
@@ -83,9 +32,8 @@ public class RequestHandler extends YandexAlisRequestAbstractHandler implements 
 
         return response;
     }
-
     @Override
-    public YandexAliceResponse newUser (YandexAliceRequest request) {
+    public YandexAliceResponse newUser(YandexAliceRequest request) {
         YandexAliceResponse yandexAliceResponse = new YandexAliceResponse(new YASkillResponse());
         ServiceUser user = new ServiceUser();
         YASession yandexSession = request.getSession();
@@ -109,4 +57,6 @@ public class RequestHandler extends YandexAlisRequestAbstractHandler implements 
         }
         return yandexAliceResponse;
     }
+
+
 }
